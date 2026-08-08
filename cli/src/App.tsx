@@ -5,6 +5,7 @@ import Register from "./pages/Auth/Register.tsx";
 import MyBookings from "./pages/Bookings/MyBookings.tsx";
 import Home from "./pages/Home/Home.tsx";
 import Profile from "./pages/Profile/Profile.tsx";
+import Shop from "./pages/Shop/Shop.tsx";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/inscription" element={<Register />} />
             <Route path="/mon-compte" element={<Profile />} />
             <Route path="/tatoueur/demandes" element={<MyBookings />} />
+            <Route path="/gerant/salon" element={<Shop />} />
         </Routes>
     );
 }
