@@ -199,17 +199,38 @@ export async function getManagerWorkstations(req: Request, res: Response) {
 
     const workstations = await prisma.workstation.findMany({
         where,
+        select: {
+            id: true,
+            name: true,
+            description: true,
+            equipment: true,
+            dailyPrice: true,
+            createdAt: true,
+            updatedAt: true,
+            shopId: true,
+            _count: {
+                select: {
+                    availabilities: {
+                        where: {
+                            status: "open",
+                            availableOn: { gte: getToday() },
+                        },
+                    },
+                },
+            },
+        },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { id: "asc" },
     });
 
     const data = workstations.map((workstation) => {
-        const { dailyPrice, ...rest } = workstation;
+        const { dailyPrice, _count, ...rest } = workstation;
 
         return {
             ...rest,
             dailyPriceCents: toCents(dailyPrice),
+            openAvailabilityCount: _count.availabilities,
         };
     });
 
