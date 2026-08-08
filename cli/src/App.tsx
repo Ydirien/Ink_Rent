@@ -12,6 +12,7 @@ import PrivacyPolicy from "./pages/Legal/PrivacyPolicy.tsx";
 import Profile from "./pages/Profile/Profile.tsx";
 import SearchResults from "./pages/Search/SearchResults.tsx";
 import Shop from "./pages/Shop/Shop.tsx";
+import ManageWorkstation from "./pages/Workstations/ManageWorkstation.tsx";
 import MyWorkstations from "./pages/Workstations/MyWorkstations.tsx";
 import NewWorkstation from "./pages/Workstations/NewWorkstation.tsx";
 import WorkstationDetail from "./pages/Workstations/WorkstationDetail.tsx";
@@ -41,6 +42,10 @@ function App() {
             <Route
                 path="/gerant/postes/nouveau"
                 element={<NewWorkstation />}
+            />
+            <Route
+                path="/gerant/postes/:posteId"
+                element={<ManageWorkstation />}
             />
             <Route path="*" element={<NotFound />} />
         </Routes>

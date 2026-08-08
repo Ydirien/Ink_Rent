@@ -19,6 +19,37 @@ export interface ManagerWorkstationsResponse {
     };
 }
 
+export type AvailabilityStatus = "open" | "pending" | "booked";
+
+export interface ManagerAvailability {
+    id: number;
+    availableOn: string;
+    status: AvailabilityStatus;
+    workstationId: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ManagerWorkstationDetail {
+    id: number;
+    name: string;
+    description: string | null;
+    equipment: string | null;
+    dailyPriceCents: number;
+    shopId: number;
+    createdAt: string;
+    updatedAt: string;
+    availabilities: ManagerAvailability[];
+}
+
+export interface ManagerWorkstationResponse {
+    data: ManagerWorkstationDetail;
+}
+
+export interface AvailabilityResponse {
+    data: ManagerAvailability;
+}
+
 export interface PublicWorkstation {
     id: number;
     name: string;
