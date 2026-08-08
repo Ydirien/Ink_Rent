@@ -1,3 +1,4 @@
+import "./Legal.css";
 import Footer from "../../components/Footer/Footer.tsx";
 import Header from "../../components/Header/Header.tsx";
 
