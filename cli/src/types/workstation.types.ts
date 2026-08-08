@@ -48,3 +48,7 @@ export interface PublicWorkstationsResponse {
         total: number;
     };
 }
+
+export interface PublicWorkstationResponse {
+    data: PublicWorkstation;
+}

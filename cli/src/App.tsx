@@ -13,12 +13,17 @@ import Profile from "./pages/Profile/Profile.tsx";
 import SearchResults from "./pages/Search/SearchResults.tsx";
 import Shop from "./pages/Shop/Shop.tsx";
 import MyWorkstations from "./pages/Workstations/MyWorkstations.tsx";
+import WorkstationDetail from "./pages/Workstations/WorkstationDetail.tsx";
 
 function App() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/recherche" element={<SearchResults />} />
+            <Route
+                path="/postes/:posteId"
+                element={<WorkstationDetail />}
+            />
             <Route path="/connexion" element={<Login />} />
             <Route path="/inscription" element={<Register />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
