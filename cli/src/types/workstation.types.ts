@@ -52,3 +52,17 @@ export interface PublicWorkstationsResponse {
 export interface PublicWorkstationResponse {
     data: PublicWorkstation;
 }
+
+export interface CreatedWorkstationResponse {
+    data: {
+        id: number;
+    };
+}
+
+export interface WorkstationFormErrors {
+    name?: string;
+    description?: string;
+    equipment?: string;
+    dailyPrice?: string;
+    form?: string;
+}

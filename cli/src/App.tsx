@@ -13,6 +13,7 @@ import Profile from "./pages/Profile/Profile.tsx";
 import SearchResults from "./pages/Search/SearchResults.tsx";
 import Shop from "./pages/Shop/Shop.tsx";
 import MyWorkstations from "./pages/Workstations/MyWorkstations.tsx";
+import NewWorkstation from "./pages/Workstations/NewWorkstation.tsx";
 import WorkstationDetail from "./pages/Workstations/WorkstationDetail.tsx";
 
 function App() {
@@ -37,6 +38,10 @@ function App() {
             <Route path="/gerant/demandes" element={<ReceivedBookings />} />
             <Route path="/gerant/salon" element={<Shop />} />
             <Route path="/gerant/postes" element={<MyWorkstations />} />
+            <Route
+                path="/gerant/postes/nouveau"
+                element={<NewWorkstation />}
+            />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );
