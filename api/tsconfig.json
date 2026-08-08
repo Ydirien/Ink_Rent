@@ -1,44 +1,19 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
+  // Ce fichier gère la manière dont le compilateur TSC va compiler le code TS vers du JS
+  
   "compilerOptions": {
-    // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
-
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
-    "types": [],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
-
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-
-    // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-
-    // Recommended Options
-    "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
+    "target": "esnext",               // Language cible pour la compilation TS -> dernière version de JS
+    "module": "nodenext",             // Type de résolution cible pour les modules (ESM)
+    "moduleResolution": "nodenext",   // Type de résolution source pour les modules (ESM)
+    "rootDir": "./",                  // Où se trouve notre code TS
+    "outDir": "./dist",               // Où sera généré notre code JS
+    
+    "forceConsistentCasingInFileNames": true, // Éviter les problèmes de casing dans les noms de fichier
+    "rewriteRelativeImportExtensions": true,  // Autoriser les imports avec l'extension .ts
+    
+    "strict": true,                   // Règle de syntaxe TS à respecter
+    "verbatimModuleSyntax": true,     // Avoir les imports de type via `import type`
+    
+    "skipLibCheck": true              // Ne pas checker le code TS des fichier .d.ts
   }
 }
