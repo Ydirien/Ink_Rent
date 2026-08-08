@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import z from "zod";
-import {BadRequestError,ConflictError,NotFoundError} from "../lib/errors.ts";
+import { BadRequestError, ConflictError, NotFoundError } from "../lib/errors.ts";
 import { prisma } from "../models/index.ts";
 
 const createAvailabilitySchema = z
@@ -34,6 +34,7 @@ export async function createAvailability(req: Request, res: Response) {
         throw new BadRequestError("La date doit être future");
     }
 
+    // On vérifie que le poste appartient bien au gérant connecté
     const workstation = await prisma.workstation.findFirst({
         where: {
             id: workstationId,
@@ -45,6 +46,7 @@ export async function createAvailability(req: Request, res: Response) {
         throw new NotFoundError("Poste introuvable");
     }
 
+    // On évite de créer deux fois la même date pour ce poste
     const existingAvailability = await prisma.availability.findUnique({
         where: {
             workstationId_availableOn: {
@@ -73,6 +75,7 @@ export async function deleteAvailability(req: Request, res: Response) {
     const { workstationId, availabilityId } =
         await availabilityParamsSchema.parseAsync(req.params);
 
+    // On vérifie que le poste appartient bien au gérant connecté
     const workstation = await prisma.workstation.findFirst({
         where: {
             id: workstationId,
@@ -101,6 +104,8 @@ export async function deleteAvailability(req: Request, res: Response) {
         );
     }
 
+    // On ne supprime que si le statut est toujours "open" au moment de la
+    // requête, pour éviter de supprimer une dispo qui vient d'être réservée
     const deletedAvailability = await prisma.availability.deleteMany({
         where: {
             id: availabilityId,

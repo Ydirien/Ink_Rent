@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import z from "zod";
 import { ConflictError, NotFoundError } from "../lib/errors.ts";
-import { prisma } from "../models/index.ts";
+import { prisma, type Prisma } from "../models/index.ts";
 
 const createBookingSchema = z
     .object({
@@ -14,6 +14,8 @@ const bookingParamsSchema = z.object({
     bookingId: z.coerce.number().int().positive(),
 });
 
+// Fait le lien entre les statuts envoyés par le front (en majuscules) et
+// les valeurs stockées en base (en minuscules)
 const statusValues = {
     PENDING: "pending",
     CONFIRMED: "confirmed",
@@ -42,6 +44,11 @@ function getToday() {
     return today;
 }
 
+// Le prix est stocké en euros (Decimal) en base, mais l'API renvoie des centimes
+function toCents(price: Prisma.Decimal) {
+    return Math.round(Number(price) * 100);
+}
+
 // Routes du tatoueur
 
 export async function createBooking(req: Request, res: Response) {
@@ -64,6 +71,9 @@ export async function createBooking(req: Request, res: Response) {
             throw new ConflictError("Cette disponibilité n'est plus réservable");
         }
 
+        // On passe la disponibilité en "pending" seulement si elle est
+        // toujours "open" à cet instant, pour éviter deux réservations
+        // en même temps sur le même créneau
         const updatedAvailability =
             await transaction.availability.updateMany({
                 where: {
@@ -149,6 +159,7 @@ export async function getMyBookings(req: Request, res: Response) {
         orderBy: { createdAt: "desc" },
     });
 
+    // On met les statuts en majuscules et le prix en centimes pour le front
     const data = bookings.map((booking) => {
         const { dailyPrice, ...workstation } =
             booking.availability.workstation;
@@ -161,7 +172,7 @@ export async function getMyBookings(req: Request, res: Response) {
                 status: booking.availability.status.toUpperCase(),
                 workstation: {
                     ...workstation,
-                    dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+                    dailyPriceCents: toCents(dailyPrice),
                 },
             },
         };
@@ -209,6 +220,7 @@ export async function cancelBooking(req: Request, res: Response) {
             );
         }
 
+        // On remet la disponibilité à "open" puisque la réservation est annulée
         const updatedAvailability =
             await transaction.availability.updateMany({
                 where: {
@@ -294,7 +306,7 @@ export async function getManagerBookings(req: Request, res: Response) {
                 status: booking.availability.status.toUpperCase(),
                 workstation: {
                     ...workstation,
-                    dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+                    dailyPriceCents: toCents(dailyPrice),
                 },
             },
         };
@@ -310,10 +322,17 @@ export async function updateBookingStatus(req: Request, res: Response) {
     const { bookingId } = await bookingParamsSchema.parseAsync(req.params);
     const { status } = await updateStatusSchema.parseAsync(req.body);
 
-    const bookingStatus =
-        status === "CONFIRMED" ? "confirmed" : "rejected";
-    const availabilityStatus =
-        status === "CONFIRMED" ? "booked" : "open";
+    // On traduit le statut choisi par le gérant en statuts de booking / dispo
+    let bookingStatus: "confirmed" | "rejected";
+    let availabilityStatus: "booked" | "open";
+
+    if (status === "CONFIRMED") {
+        bookingStatus = "confirmed";
+        availabilityStatus = "booked";
+    } else {
+        bookingStatus = "rejected";
+        availabilityStatus = "open";
+    }
 
     const booking = await prisma.$transaction(async (transaction) => {
         const existingBooking = await transaction.booking.findFirst({

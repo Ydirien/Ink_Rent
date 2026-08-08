@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import z from "zod";
-import {BadRequestError,ConflictError,NotFoundError} from "../lib/errors.ts";
-import { prisma } from "../models/index.ts";
+import { BadRequestError, ConflictError, NotFoundError } from "../lib/errors.ts";
+import { prisma, type Prisma } from "../models/index.ts";
 
 const workstationSchema = z
     .object({
@@ -51,12 +51,19 @@ function checkDateIsNotPast(date: Date) {
     }
 }
 
+// Le prix est stocké en euros (Decimal) en base, mais l'API renvoie des centimes
+function toCents(price: Prisma.Decimal) {
+    return Math.round(Number(price) * 100);
+}
+
 // Routes publiques
 
 export async function searchWorkstations(req: Request, res: Response) {
     const { city, date, page, limit } = await searchSchema.parseAsync(req.query);
     checkDateIsNotPast(date);
 
+    // On ne garde que les postes d'une ville qui ont au moins une dispo
+    // "open" à la date demandée
     const where = {
         shop: {
             city: {
@@ -114,7 +121,7 @@ export async function searchWorkstations(req: Request, res: Response) {
 
         return {
             ...rest,
-            dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+            dailyPriceCents: toCents(dailyPrice),
         };
     });
 
@@ -174,7 +181,7 @@ export async function getPublicWorkstation(req: Request, res: Response) {
     res.json({
         data: {
             ...data,
-            dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+            dailyPriceCents: toCents(dailyPrice),
         },
     });
 }
@@ -202,7 +209,7 @@ export async function getManagerWorkstations(req: Request, res: Response) {
 
         return {
             ...rest,
-            dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+            dailyPriceCents: toCents(dailyPrice),
         };
     });
 
@@ -216,6 +223,7 @@ export async function createWorkstation(req: Request, res: Response) {
     const { dailyPriceCents, ...data } =
         await workstationSchema.parseAsync(req.body);
 
+    // On ne peut créer un poste que si on a déjà un salon
     const shop = await prisma.shop.findUnique({
         where: { managerId: req.user.id },
     });
@@ -224,6 +232,7 @@ export async function createWorkstation(req: Request, res: Response) {
         throw new ConflictError("Vous devez d'abord créer votre salon");
     }
 
+    // On reconvertit les centimes reçus du front en euros pour la base
     const workstation = await prisma.workstation.create({
         data: {
             ...data,
@@ -237,7 +246,7 @@ export async function createWorkstation(req: Request, res: Response) {
     res.status(201).json({
         data: {
             ...workstationData,
-            dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+            dailyPriceCents: toCents(dailyPrice),
         },
     });
 }
@@ -266,7 +275,7 @@ export async function getManagerWorkstation(req: Request, res: Response) {
     res.json({
         data: {
             ...data,
-            dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+            dailyPriceCents: toCents(dailyPrice),
         },
     });
 }
@@ -302,7 +311,7 @@ export async function updateWorkstation(req: Request, res: Response) {
     res.json({
         data: {
             ...workstationData,
-            dailyPriceCents: Math.round(Number(dailyPrice) * 100),
+            dailyPriceCents: toCents(dailyPrice),
         },
     });
 }
@@ -321,6 +330,8 @@ export async function deleteWorkstation(req: Request, res: Response) {
         throw new NotFoundError("Poste introuvable");
     }
 
+    // On empêche la suppression d'un poste qui a une demande en cours ou
+    // une réservation confirmée à venir
     const activeAvailability = await prisma.availability.findFirst({
         where: {
             workstationId,

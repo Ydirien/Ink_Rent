@@ -5,7 +5,7 @@ import z from "zod";
 import { config } from "../../config.ts";
 import { ConflictError, UnauthorizedError } from "../lib/errors.ts";
 import type { Role } from "../lib/roles.ts";
-import { prisma } from "../models/index.ts";
+import { prisma, type UserType } from "../models/index.ts";
 
 const registerSchema = z
     .object({
@@ -31,6 +31,7 @@ const loginSchema = z.object({
     password: z.string().min(1),
 });
 
+// Crée le token JWT que le front va utiliser pour s'authentifier
 function generateAccessToken(userId: number, role: Role) {
     const token = jwt.sign(
         { id: userId, role },
@@ -51,6 +52,7 @@ export async function registerUser(req: Request, res: Response) {
 
     const normalizedEmail = email.toLowerCase();
 
+    // On vérifie que l'email n'est pas déjà pris
     const existingUser = await prisma.user.findUnique({
         where: { email: normalizedEmail },
     });
@@ -61,13 +63,17 @@ export async function registerUser(req: Request, res: Response) {
 
     const passwordHash = await argon2.hash(password);
 
-    const accountType =
-        role === "TATTOO_ARTIST" ? "tattoo_artist" : "shop_manager";
+    // Selon le rôle choisi, on crée le bon profil en même temps que l'utilisateur
+    let accountType: UserType;
+    let profile: { tattooArtist: { create: {} } } | { shopManager: { create: {} } };
 
-    const profile =
-        role === "TATTOO_ARTIST"
-            ? { tattooArtist: { create: {} } }
-            : { shopManager: { create: {} } };
+    if (role === "TATTOO_ARTIST") {
+        accountType = "tattoo_artist";
+        profile = { tattooArtist: { create: {} } };
+    } else {
+        accountType = "shop_manager";
+        profile = { shopManager: { create: {} } };
+    }
 
     const user = await prisma.user.create({
         data: {
@@ -116,6 +122,7 @@ export async function loginUser(req: Request, res: Response) {
         throw new UnauthorizedError("Email ou mot de passe incorrect");
     }
 
+    // On retrouve le rôle du compte à partir du profil lié
     let role: Role;
 
     if (user.tattooArtist) {

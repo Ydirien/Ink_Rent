@@ -33,6 +33,7 @@ export async function getShop(req: Request, res: Response) {
 export async function createShop(req: Request, res: Response) {
     const data = await shopSchema.parseAsync(req.body);
 
+    // Un gérant ne peut avoir qu'un seul salon
     const existingShop = await prisma.shop.findUnique({
         where: { managerId: req.user.id },
     });
@@ -54,6 +55,7 @@ export async function createShop(req: Request, res: Response) {
 export async function updateShop(req: Request, res: Response) {
     const data = await updateShopSchema.parseAsync(req.body);
 
+    // On vérifie que le gérant a bien déjà un salon avant de le modifier
     const existingShop = await prisma.shop.findUnique({
         where: { managerId: req.user.id },
     });
