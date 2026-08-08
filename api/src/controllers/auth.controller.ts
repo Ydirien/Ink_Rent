@@ -4,9 +4,8 @@ import jwt from "jsonwebtoken";
 import z from "zod";
 import { config } from "../../config.ts";
 import { ConflictError, UnauthorizedError } from "../lib/errors.ts";
+import type { Role } from "../lib/roles.ts";
 import { prisma } from "../models/index.ts";
-
-type Role = "TATTOO_ARTIST" | "SHOP_MANAGER";
 
 const registerSchema = z
     .object({
@@ -32,7 +31,7 @@ const loginSchema = z.object({
     password: z.string().min(1),
 });
 
-function generateAccessToken(userId: string, role: Role) {
+function generateAccessToken(userId: number, role: Role) {
     const token = jwt.sign(
         { id: userId, role },
         config.accessTokenSecret,
@@ -62,6 +61,9 @@ export async function registerUser(req: Request, res: Response) {
 
     const passwordHash = await argon2.hash(password);
 
+    const accountType =
+        role === "TATTOO_ARTIST" ? "tattoo_artist" : "shop_manager";
+
     const profile =
         role === "TATTOO_ARTIST"
             ? { tattooArtist: { create: {} } }
@@ -71,7 +73,8 @@ export async function registerUser(req: Request, res: Response) {
         data: {
             displayName,
             email: normalizedEmail,
-            passwordHash,
+            password: passwordHash,
+            accountType,
             ...profile,
         },
     });
@@ -103,11 +106,11 @@ export async function loginUser(req: Request, res: Response) {
         },
     });
 
-    if (!user || user.deletedAt) {
+    if (!user) {
         throw new UnauthorizedError("Email ou mot de passe incorrect");
     }
 
-    const isMatching = await argon2.verify(user.passwordHash, password);
+    const isMatching = await argon2.verify(user.password, password);
 
     if (!isMatching) {
         throw new UnauthorizedError("Email ou mot de passe incorrect");
