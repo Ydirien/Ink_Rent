@@ -1,0 +1,147 @@
+.site-header {
+    --header-ink: #171416;
+    --header-wine: #6d1738;
+    --header-copper: #d99a6c;
+    --header-paper: #f7f3ee;
+    --header-surface: #ffffff;
+    --header-stone: #7a7175;
+    --header-border: #e9ded7;
+
+    position: relative;
+    z-index: 10;
+    min-height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    color: var(--header-surface);
+    background: var(--header-ink);
+    border-bottom: 4px solid var(--header-copper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    text-align: left;
+}
+
+.site-logo {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--header-surface);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-decoration: none;
+}
+
+.site-logo__icon {
+    position: relative;
+    display: block;
+    width: 38px;
+    height: 38px;
+    border: 2px solid var(--header-surface);
+    border-radius: 6px;
+    transform: rotate(-8deg);
+}
+
+.site-logo__icon::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    bottom: 4px;
+    width: 3px;
+    height: 11px;
+    border-radius: 999px;
+    background: var(--header-copper);
+}
+
+.site-logo:focus-visible,
+.site-menu summary:focus-visible {
+    outline: 3px solid var(--header-copper);
+    outline-offset: 3px;
+}
+
+.site-menu {
+    position: relative;
+}
+
+.site-menu summary {
+    min-width: 96px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    color: var(--header-surface);
+    background: transparent;
+    border: 1px solid var(--header-stone);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    list-style: none;
+}
+
+.site-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.site-menu summary:hover {
+    border-color: var(--header-copper);
+}
+
+.site-menu:not([open]) nav {
+    display: none;
+}
+
+.site-menu nav {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: min(260px, calc(100vw - 32px));
+    padding: 8px;
+    background: var(--header-surface);
+    border: 1px solid var(--header-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(23 20 22 / 8%);
+}
+
+.site-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-menu a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    color: var(--header-ink);
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.site-menu a:hover {
+    color: var(--header-wine);
+    background: var(--header-paper);
+}
+
+.site-menu a:focus-visible {
+    outline: 3px solid var(--header-wine);
+    outline-offset: 1px;
+}
+
+@media (min-width: 768px) {
+    .site-header {
+        min-height: 88px;
+        padding: 16px 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .site-header {
+        padding-right: 32px;
+        padding-left: 32px;
+    }
+}

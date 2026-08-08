@@ -34,131 +34,6 @@
     box-sizing: border-box;
 }
 
-/* En-tête */
-.register-page .site-header {
-    position: relative;
-    z-index: 10;
-    min-height: 96px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    color: var(--surface);
-    background: var(--ink-950);
-    border-bottom: 4px solid var(--copper-400);
-}
-
-.register-page .site-logo {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    color: var(--surface);
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-decoration: none;
-}
-
-.register-page .site-logo__icon {
-    position: relative;
-    display: block;
-    width: 38px;
-    height: 38px;
-    border: 2px solid var(--surface);
-    border-radius: 6px;
-    transform: rotate(-8deg);
-}
-
-.register-page .site-logo__icon::after {
-    content: "";
-    position: absolute;
-    right: -3px;
-    bottom: 4px;
-    width: 3px;
-    height: 11px;
-    border-radius: 999px;
-    background: var(--copper-400);
-}
-
-.register-page .site-logo:focus-visible,
-.register-page .site-menu summary:focus-visible {
-    outline: 3px solid var(--copper-400);
-    outline-offset: 3px;
-}
-
-.register-page .site-menu {
-    position: relative;
-}
-
-.register-page .site-menu summary {
-    min-width: 96px;
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 16px;
-    color: var(--surface);
-    background: transparent;
-    border: 1px solid var(--stone-500);
-    border-radius: var(--radius-control);
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 700;
-    list-style: none;
-}
-
-.register-page .site-menu summary::-webkit-details-marker {
-    display: none;
-}
-
-.register-page .site-menu summary:hover {
-    border-color: var(--copper-400);
-}
-
-.register-page .site-menu:not([open]) nav {
-    display: none;
-}
-
-.register-page .site-menu nav {
-    position: absolute;
-    top: calc(100% + 12px);
-    right: 0;
-    width: min(260px, calc(100vw - 32px));
-    padding: 8px;
-    background: var(--surface);
-    border: 1px solid var(--stone-200);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-}
-
-.register-page .site-menu ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.register-page .site-menu a {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    color: var(--ink-950);
-    border-radius: 6px;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.register-page .site-menu a:hover {
-    color: var(--wine-700);
-    background: var(--paper-50);
-}
-
-.register-page .site-menu a:focus-visible {
-    outline: 3px solid var(--wine-700);
-    outline-offset: 1px;
-}
-
 /* Formulaire d'inscription */
 .register-main {
     position: relative;
@@ -403,11 +278,6 @@
 }
 
 @media (min-width: 768px) {
-    .register-page .site-header {
-        min-height: 88px;
-        padding: 16px 24px;
-    }
-
     .register-main {
         padding: 64px 24px 96px;
     }
@@ -435,7 +305,6 @@
 }
 
 @media (min-width: 1024px) {
-    .register-page .site-header,
     .register-page .site-footer {
         padding-right: 32px;
         padding-left: 32px;
