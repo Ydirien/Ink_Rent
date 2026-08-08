@@ -401,55 +401,6 @@
         padding: 16px 24px;
     }
 
-    .home-page .site-menu summary {
-        display: none;
-    }
-
-    .home-page .site-menu:not([open]) nav,
-    .home-page .site-menu nav {
-        position: static;
-        width: auto;
-        display: block;
-        padding: 0;
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-        box-shadow: none;
-    }
-
-    .home-page .site-menu ul {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .home-page .site-menu a {
-        position: relative;
-        padding: 8px 10px;
-        color: var(--surface);
-        font-weight: 500;
-    }
-
-    .home-page .site-menu a:hover {
-        color: var(--surface);
-        background: transparent;
-    }
-
-    .home-page .site-menu a::after {
-        content: "";
-        position: absolute;
-        right: 10px;
-        bottom: 2px;
-        left: 10px;
-        height: 2px;
-        background: transparent;
-    }
-
-    .home-page .site-menu a:hover::after,
-    .home-page .site-menu li:first-child a::after {
-        background: var(--copper-400);
-    }
-
     .home-page main {
         grid-template-columns: repeat(12, minmax(0, 1fr));
         padding: 32px 24px 64px;
@@ -513,10 +464,6 @@
     .home-page .site-header {
         padding-right: 32px;
         padding-left: 32px;
-    }
-
-    .home-page .site-menu ul {
-        gap: 20px;
     }
 
     .home-page main {
