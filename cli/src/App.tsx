@@ -10,6 +10,7 @@ import Home from "./pages/Home/Home.tsx";
 import MentionsLegales from "./pages/Legal/MentionsLegales.tsx";
 import PrivacyPolicy from "./pages/Legal/PrivacyPolicy.tsx";
 import Profile from "./pages/Profile/Profile.tsx";
+import SearchResults from "./pages/Search/SearchResults.tsx";
 import Shop from "./pages/Shop/Shop.tsx";
 import MyWorkstations from "./pages/Workstations/MyWorkstations.tsx";
 
@@ -17,6 +18,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/recherche" element={<SearchResults />} />
             <Route path="/connexion" element={<Login />} />
             <Route path="/inscription" element={<Register />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
