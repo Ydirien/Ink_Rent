@@ -53,9 +53,8 @@ function MyBookings() {
                 }
 
                 if (response.status === 403) {
-                    throw new Error(
-                        "Cette page est réservée aux tatoueurs invités.",
-                    );
+                    navigate("/acces-interdit", { replace: true });
+                    return null;
                 }
 
                 if (!response.ok) {

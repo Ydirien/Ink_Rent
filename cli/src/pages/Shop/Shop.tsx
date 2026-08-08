@@ -50,9 +50,8 @@ function Shop() {
                 }
 
                 if (response.status === 403) {
-                    throw new Error(
-                        "Cette page est réservée aux gérants de salon.",
-                    );
+                    navigate("/acces-interdit", { replace: true });
+                    return null;
                 }
 
                 if (!response.ok) {
@@ -168,7 +167,7 @@ function Shop() {
             }
 
             if (response.status === 403) {
-                setError("Cette page est réservée aux gérants de salon.");
+                navigate("/acces-interdit");
                 return;
             }
 

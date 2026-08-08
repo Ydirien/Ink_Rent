@@ -51,9 +51,8 @@ function MyWorkstations() {
                 }
 
                 if (shopResponse.status === 403) {
-                    throw new Error(
-                        "Cette page est réservée aux gérants de salon.",
-                    );
+                    navigate("/acces-interdit", { replace: true });
+                    return;
                 }
 
                 if (shopResponse.status === 404) {
@@ -88,9 +87,8 @@ function MyWorkstations() {
                 }
 
                 if (workstationsResponse.status === 403) {
-                    throw new Error(
-                        "Cette page est réservée aux gérants de salon.",
-                    );
+                    navigate("/acces-interdit", { replace: true });
+                    return;
                 }
 
                 if (!workstationsResponse.ok) {

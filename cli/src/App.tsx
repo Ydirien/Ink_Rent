@@ -4,6 +4,8 @@ import Login from "./pages/Auth/Login.tsx";
 import Register from "./pages/Auth/Register.tsx";
 import ReceivedBookings from "./pages/Bookings/ReceivedBookings.tsx";
 import MyBookings from "./pages/Bookings/MyBookings.tsx";
+import AccessDenied from "./pages/Errors/AccessDenied.tsx";
+import NotFound from "./pages/Errors/NotFound.tsx";
 import Home from "./pages/Home/Home.tsx";
 import MentionsLegales from "./pages/Legal/MentionsLegales.tsx";
 import PrivacyPolicy from "./pages/Legal/PrivacyPolicy.tsx";
@@ -22,11 +24,13 @@ function App() {
                 path="/politique-de-confidentialite"
                 element={<PrivacyPolicy />}
             />
+            <Route path="/acces-interdit" element={<AccessDenied />} />
             <Route path="/mon-compte" element={<Profile />} />
             <Route path="/tatoueur/demandes" element={<MyBookings />} />
             <Route path="/gerant/demandes" element={<ReceivedBookings />} />
             <Route path="/gerant/salon" element={<Shop />} />
             <Route path="/gerant/postes" element={<MyWorkstations />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }
