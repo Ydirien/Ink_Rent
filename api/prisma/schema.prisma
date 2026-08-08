@@ -6,3 +6,153 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// -----------------------------
+// Enums
+// -----------------------------
+
+enum UserType {
+  tattoo_artist
+  shop_manager
+}
+
+enum AvailabilityStatus {
+  open
+  pending
+  booked
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  rejected
+  cancelled
+}
+
+// -----------------------------
+// Utilisateurs
+// -----------------------------
+
+model User {
+  id          Int       @id @default(autoincrement())
+  displayName String    @map("display_name") @db.VarChar(80)
+  email       String    @unique @db.VarChar(254)
+  password    String    @db.VarChar(255)
+  accountType UserType  @map("account_type")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  shopManager  ShopManager?
+  tattooArtist TattooArtist?
+
+  @@map("users")
+}
+
+// -----------------------------
+// Gérants de salon
+// -----------------------------
+
+model ShopManager {
+  userId Int  @id @map("user_id")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  shop Shop?
+
+  @@map("shop_managers")
+}
+
+// -----------------------------
+// Tatoueurs
+// -----------------------------
+
+model TattooArtist {
+  userId Int  @id @map("user_id")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bookings Booking[]
+
+  @@map("tattoo_artists")
+}
+
+// -----------------------------
+// Salons
+// -----------------------------
+
+model Shop {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(120)
+  description String?  @db.Text
+  address     String   @db.VarChar(255)
+  postalCode  String   @map("postal_code") @db.VarChar(10)
+  city        String   @db.VarChar(120)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  managerId Int         @unique @map("manager_id")
+  manager   ShopManager @relation(fields: [managerId], references: [userId], onDelete: Cascade)
+
+  workstations Workstation[]
+
+  @@map("shops")
+}
+
+// -----------------------------
+// Postes de travail
+// -----------------------------
+
+model Workstation {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(120)
+  description String?  @db.Text
+  equipment   String?  @db.Text
+  dailyPrice  Decimal  @map("daily_price") @db.Decimal(8, 2)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  shopId Int  @map("shop_id")
+  shop   Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  availabilities Availability[]
+
+  @@map("workstations")
+}
+
+// -----------------------------
+// Disponibilités
+// -----------------------------
+
+model Availability {
+  id          Int                @id @default(autoincrement())
+  availableOn DateTime           @map("available_on") @db.Date
+  status      AvailabilityStatus @default(open)
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+
+  workstationId Int         @map("workstation_id")
+  workstation   Workstation @relation(fields: [workstationId], references: [id], onDelete: Cascade)
+
+  bookings Booking[]
+
+  @@unique([workstationId, availableOn])
+  @@map("availabilities")
+}
+
+// -----------------------------
+// Réservations
+// -----------------------------
+
+model Booking {
+  id        Int           @id @default(autoincrement())
+  message   String?       @db.Text
+  status    BookingStatus @default(pending)
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+
+  availabilityId Int          @map("availability_id")
+  availability   Availability @relation(fields: [availabilityId], references: [id], onDelete: Cascade)
+
+  tattooArtistId Int          @map("tattoo_artist_id")
+  tattooArtist   TattooArtist @relation(fields: [tattooArtistId], references: [userId], onDelete: Cascade)
+
+  @@map("bookings")
+}
