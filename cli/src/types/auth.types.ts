@@ -1,3 +1,5 @@
+export type UserRole = "TATTOO_ARTIST" | "SHOP_MANAGER";
+
 export interface LoginResponse {
     data: {
         accessToken: {
@@ -7,7 +9,9 @@ export interface LoginResponse {
             id: number;
             displayName: string;
             email: string;
-            role: "TATTOO_ARTIST" | "SHOP_MANAGER";
+            role: UserRole;
         };
     };
 }
+
+export type RegisterResponse = LoginResponse;
