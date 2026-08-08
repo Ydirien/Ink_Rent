@@ -5,6 +5,7 @@ import {
     managerRouter as managerBookingRouter,
     router as bookingRouter,
 } from "./booking.routes.ts";
+import { router as healthRouter } from "./health.routes.ts";
 import { router as shopRouter } from "./shop.routes.ts";
 import { router as userRouter } from "./users.routes.ts";
 import {
@@ -16,6 +17,7 @@ export const router = Router();
 
 router.use("/auth", authRouter);
 router.use("/bookings", bookingRouter);
+router.use("/health", healthRouter);
 router.use("/manager/bookings", managerBookingRouter);
 router.use("/manager/shop", shopRouter);
 router.use("/manager/workstations", managerWorkstationRouter);
