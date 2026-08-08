@@ -2,20 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Footer from "../../components/Footer/Footer.tsx";
 import Header from "../../components/Header/Header.tsx";
-
-interface LoginResponse {
-    data: {
-        accessToken: {
-            token: string;
-        };
-        user: {
-            id: number;
-            displayName: string;
-            email: string;
-            role: "TATTOO_ARTIST" | "SHOP_MANAGER";
-        };
-    };
-}
+import type { LoginResponse } from "../../types/auth.types.ts";
 
 function Login() {
     const navigate = useNavigate();
