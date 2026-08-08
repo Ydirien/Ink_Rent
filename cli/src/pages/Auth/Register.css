@@ -237,46 +237,6 @@
     align-items: center;
 }
 
-/* Pied de page */
-.register-page .site-footer {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: auto;
-    padding: 24px 16px;
-    color: var(--surface);
-    background: var(--ink-950);
-}
-
-.register-page .site-footer p {
-    color: var(--surface);
-    font-size: 14px;
-}
-
-.register-page .site-footer nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 16px;
-}
-
-.register-page .site-footer a {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    color: var(--surface);
-    text-decoration-color: var(--copper-400);
-    text-underline-offset: 4px;
-}
-
-.register-page .site-footer a:hover {
-    color: var(--copper-400);
-}
-
-.register-page .site-footer a:focus-visible {
-    outline: 3px solid var(--copper-400);
-    outline-offset: 2px;
-}
-
 @media (min-width: 768px) {
     .register-main {
         padding: 64px 24px 96px;
@@ -296,20 +256,9 @@
         font-size: 40px;
     }
 
-    .register-page .site-footer {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 24px;
-    }
 }
 
 @media (min-width: 1024px) {
-    .register-page .site-footer {
-        padding-right: 32px;
-        padding-left: 32px;
-    }
-
     .register-card {
         padding: 32px 40px;
     }

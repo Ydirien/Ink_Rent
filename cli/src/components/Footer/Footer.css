@@ -1,0 +1,61 @@
+.site-footer {
+    --footer-ink: #171416;
+    --footer-copper: #d99a6c;
+    --footer-surface: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: auto;
+    padding: 24px 16px;
+    color: var(--footer-surface);
+    background: var(--footer-ink);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    text-align: left;
+}
+
+.site-footer p {
+    margin: 0;
+    color: var(--footer-surface);
+    font-size: 14px;
+}
+
+.site-footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.site-footer a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--footer-surface);
+    text-decoration-color: var(--footer-copper);
+    text-underline-offset: 4px;
+}
+
+.site-footer a:hover {
+    color: var(--footer-copper);
+}
+
+.site-footer a:focus-visible {
+    outline: 3px solid var(--footer-copper);
+    outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+    .site-footer {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .site-footer {
+        padding-right: 32px;
+        padding-left: 32px;
+    }
+}

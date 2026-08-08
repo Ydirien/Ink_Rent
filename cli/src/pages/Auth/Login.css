@@ -188,46 +188,6 @@
     color: var(--wine-700);
 }
 
-/* Pied de page */
-.login-page .site-footer {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: auto;
-    padding: 24px 16px;
-    color: var(--surface);
-    background: var(--ink-950);
-}
-
-.login-page .site-footer p {
-    color: var(--surface);
-    font-size: 14px;
-}
-
-.login-page .site-footer nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 16px;
-}
-
-.login-page .site-footer a {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    color: var(--surface);
-    text-decoration-color: var(--copper-400);
-    text-underline-offset: 4px;
-}
-
-.login-page .site-footer a:hover {
-    color: var(--copper-400);
-}
-
-.login-page .site-footer a:focus-visible {
-    outline: 3px solid var(--copper-400);
-    outline-offset: 2px;
-}
-
 @media (min-width: 768px) {
     .login-main {
         align-items: center;
@@ -248,20 +208,9 @@
         font-size: 40px;
     }
 
-    .login-page .site-footer {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 24px;
-    }
 }
 
 @media (min-width: 1024px) {
-    .login-page .site-footer {
-        padding-right: 32px;
-        padding-left: 32px;
-    }
-
     .login-card {
         padding: 32px 40px;
     }
